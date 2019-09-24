@@ -254,6 +254,14 @@ thread_go_to_sleep(int64_t ticks)
   intr_set_level(old_level);
 }
 
+bool
+check_wake_up(int64_t current_time){
+  if (current_time >= min_sleep){
+    return True
+  }
+  return False
+}
+
 void
 thread_wake_up(int64_t ticks)
 {
