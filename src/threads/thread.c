@@ -273,6 +273,11 @@ thread_wake_up(int64_t ticks)
        e = list_next (e))
     {
       struct thread *t = list_entry (e, struct thread, elem);
+      if(min_sleep > t->time_sleep){
+        min_sleep = t->time_sleep;
+      }
+      /*
+
       if(flag == 0){
         min_sleep = t->time_sleep;
         flag = flag + 1;
@@ -280,7 +285,7 @@ thread_wake_up(int64_t ticks)
         if(min_sleep > t->time_sleep){
           min_sleep = t->time_sleep;
         }
-      }
+      }*/
     }
 }
 
