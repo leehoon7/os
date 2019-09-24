@@ -26,7 +26,7 @@ static struct list ready_list;
 
 /* List for sleep thread*/
 static struct list sleep_list;
-int64_t min_sleep = 99999999;
+int64_t min_sleep;
 /* List of all processes.  Processes are added to this list
    when they are first scheduled and removed when they exit. */
 static struct list all_list;
@@ -273,11 +273,6 @@ thread_wake_up(int64_t ticks)
        e = list_next (e))
     {
       struct thread *t = list_entry (e, struct thread, elem);
-      if(min_sleep > t->time_sleep){
-        min_sleep = t->time_sleep;
-      }
-      /*
-
       if(flag == 0){
         min_sleep = t->time_sleep;
         flag = flag + 1;
@@ -285,7 +280,7 @@ thread_wake_up(int64_t ticks)
         if(min_sleep > t->time_sleep){
           min_sleep = t->time_sleep;
         }
-      }*/
+      }
     }
 }
 
