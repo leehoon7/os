@@ -179,7 +179,7 @@ timer_interrupt (struct intr_frame *args UNUSED)
   ticks++;
   thread_tick ();
   int64_t min_time = min_time_check();
-  if (min_time < ticks){
+  if (min_time <= ticks){
     thread_wake_up(ticks);
   }
 }
