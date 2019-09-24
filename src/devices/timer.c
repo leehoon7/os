@@ -93,8 +93,8 @@ timer_sleep (int64_t ticks)
 
   ASSERT (intr_get_level () == INTR_ON);
 
-  struct thread *t = thread_current ();
-  thread_go_to_sleep(t, ticks);
+  //struct thread *t = thread_current ();
+  thread_go_to_sleep(ticks);
 
   /*
   while (timer_elapsed (start) < ticks)
@@ -178,7 +178,10 @@ timer_interrupt (struct intr_frame *args UNUSED)
 {
   ticks++;
   thread_tick ();
-  thread_wake_up(ticks);
+  int64_t min_time = min_time_check();
+  if (min_time < ticks){
+    thread_wake_up(ticks);
+  }
 }
 
 /* Returns true if LOOPS iterations waits for more than one timer

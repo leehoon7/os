@@ -118,7 +118,9 @@ typedef void thread_func (void *aux);
 tid_t thread_create (const char *name, int priority, thread_func *, void *);
 
 void thread_block (void);
-void thread_go_to_sleep(struct thread *t, int64_t ticks);
+//void thread_go_to_sleep(struct thread *t, int64_t ticks);
+int64_t min_time_check(void);
+void thread_go_to_sleep(int64_t ticks);
 void thread_wake_up(int64_t ticks);
 void thread_unblock (struct thread *);
 
