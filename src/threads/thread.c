@@ -241,8 +241,8 @@ void
 thread_go_to_sleep(int64_t ticks)
 {
   struct thread *t = thread_current();
-  enum intr_level old_level;
-  old_level = intr_disable();
+  //enum intr_level old_level;
+  //old_level = intr_disable();
   ASSERT (t != idle_thread);
 
   t->time_sleep = ticks;
@@ -251,7 +251,7 @@ thread_go_to_sleep(int64_t ticks)
     min_sleep = ticks;
   }
   thread_block();
-  intr_set_level(old_level);
+  //intr_set_level(old_level);
 }
 
 void
