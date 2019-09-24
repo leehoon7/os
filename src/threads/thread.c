@@ -232,10 +232,6 @@ thread_block (void)
   schedule ();
 }
 
-int64_t min_time_check(void){
-  return min_sleep;
-}
-
 /* sleep list에 넣고, 최소시간 비교해서 집어넣기 */
 void
 thread_go_to_sleep(int64_t ticks)
