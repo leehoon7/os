@@ -14,6 +14,10 @@ enum thread_status
     THREAD_DYING        /* About to be destroyed. */
   };
 
+typedef int bool;
+#define true 1
+#define false 0
+
 /* Thread identifier type.
    You can redefine this to whatever type you like. */
 typedef int tid_t;
