@@ -236,11 +236,17 @@ thread_block (void)
 void
 thread_go_to_sleep(struct thread *t, int64_t ticks)
 {
+  enum intr_level old_level;
+  old_level = intr_disable();
+  ASSERT (t != idle_thread);
+
   t->time_sleep = ticks;
   list_push_back (&sleep_list, &t->elem);
   if(ticks < min_sleep){
     min_sleep = ticks;
   }
+  thread_block();
+  intr_set_level(old_level);
 }
 
 void
