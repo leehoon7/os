@@ -118,11 +118,6 @@ typedef void thread_func (void *aux);
 tid_t thread_create (const char *name, int priority, thread_func *, void *);
 
 void thread_block (void);
-
-typedef int bool;
-#define true 1
-#define false 0
-
 //void thread_go_to_sleep(struct thread *t, int64_t ticks);
 int64_t min_time_check(void);
 void thread_go_to_sleep(int64_t ticks);
