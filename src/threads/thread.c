@@ -246,6 +246,7 @@ thread_go_to_sleep(struct thread *t, int64_t ticks)
 void
 thread_wake_up(int64_t ticks)
 {
+  struct list_elem *e;
   if(ticks >= min_sleep){
     for (e = list_begin (&sleep_list); e != list_end (&sleep_list);
          e = list_next (e))
