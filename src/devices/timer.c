@@ -94,7 +94,7 @@ timer_sleep (int64_t ticks)
   ASSERT (intr_get_level () == INTR_ON);
 
   //struct thread *t = thread_current ();
-  thread_go_to_sleep(ticks);
+  thread_go_to_sleep(start+ticks);
 
   /*
   while (timer_elapsed (start) < ticks)
