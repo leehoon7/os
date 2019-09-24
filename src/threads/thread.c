@@ -257,9 +257,9 @@ thread_go_to_sleep(int64_t ticks)
 bool
 check_wake_up(int64_t current_time){
   if (current_time >= min_sleep){
-    return True;
+    return TRUE;
   }
-  return False;
+  return FALSE;
 }
 
 void
