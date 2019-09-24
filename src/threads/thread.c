@@ -255,6 +255,7 @@ thread_wake_up(int64_t ticks)
         if(ticks >= t->time_sleep){
           e = list_remove(&t->elem); // 지워진거 다음꺼 반환
           e = list_prev(&t->elem);
+          thread_unblock(t);
         }
       }
     int flag = 0;
