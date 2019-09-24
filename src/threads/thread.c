@@ -26,7 +26,7 @@ static struct list ready_list;
 
 /* List for sleep thread*/
 static struct list sleep_list;
-static int64_t min_sleep;
+static int64_t min_sleep = 9999999;
 /* List of all processes.  Processes are added to this list
    when they are first scheduled and removed when they exit. */
 static struct list all_list;
