@@ -253,32 +253,30 @@ void
 thread_wake_up(int64_t ticks)
 {
   struct list_elem *e;
-  if(ticks >= min_sleep){
-    for (e = list_begin (&sleep_list); e != list_end (&sleep_list);
-         e = list_next (e))
-      {
-        struct thread *t = list_entry (e, struct thread, elem);
-        if(ticks >= t->time_sleep){
-          e = list_remove(&t->elem); // 지워진거 다음꺼 반환
-          e = list_prev(&t->elem);
-          thread_unblock(t);
-        }
+  for (e = list_begin (&sleep_list); e != list_end (&sleep_list);
+       e = list_next (e))
+    {
+      struct thread *t = list_entry (e, struct thread, elem);
+      if(ticks >= t->time_sleep){
+        e = list_remove(&t->elem); // 지워진거 다음꺼 반환
+        e = list_prev(&t->elem);
+        thread_unblock(t);
       }
-    int flag = 0;
-    for (e = list_begin (&sleep_list); e != list_end (&sleep_list);
-         e = list_next (e))
-      {
-        struct thread *t = list_entry (e, struct thread, elem);
-        if(flag == 0){
+    }
+  int flag = 0;
+  for (e = list_begin (&sleep_list); e != list_end (&sleep_list);
+       e = list_next (e))
+    {
+      struct thread *t = list_entry (e, struct thread, elem);
+      if(flag == 0){
+        min_sleep = t->time_sleep;
+        flag = flag + 1;
+      }else{
+        if(min_sleep > t->time_sleep){
           min_sleep = t->time_sleep;
-          flag = flag + 1;
-        }else{
-          if(min_sleep > t->time_sleep){
-            min_sleep = t->time_sleep;
-          }
         }
       }
-  }
+    }
 }
 
 /* Transitions a blocked thread T to the ready-to-run state.
