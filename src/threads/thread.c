@@ -261,6 +261,7 @@ check_wake_up(int64_t current_time){
 void
 thread_wake_up(int64_t ticks)
 {
+  // 찾아서 깨우기
   struct list_elem *e;
   for (e = list_begin (&sleep_list); e != list_end (&sleep_list);
        e = list_next (e))
@@ -272,6 +273,7 @@ thread_wake_up(int64_t ticks)
         thread_unblock(t);
       }
     }
+  // min_sleep 업데이트
   int flag = 0;
   for (e = list_begin (&sleep_list); e != list_end (&sleep_list);
        e = list_next (e))
