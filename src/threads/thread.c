@@ -212,28 +212,9 @@ thread_create (const char *name, int priority,
 
   /* Add to run queue. */
   thread_unblock (t);
-  if (t->priority > thread_get_priority()){
-    thread_yield ();
-  }
 
   return tid;
 }
-
-/*
-void sort_by_priority (void){
-  for (e = list_begin (&ready_list); e != list_end (&ready_list);
-       e = list_next (e))
-     {
-       for (f = e ; f != list_begin(&ready_list) ; f = list_prev (f)){
-         struct thread *t = list_entry (e, struct thread, elem);
-         struct thread *tt = list_entry (f, struct thread, elem);
-
-         if (tt->priority > t->priority){
-
-         }
-       }
-     }
-}*/
 
 /* Puts the current thread to sleep.  It will not be scheduled
    again until awoken by thread_unblock().
@@ -328,7 +309,6 @@ thread_unblock (struct thread *t)
   ASSERT (t->status == THREAD_BLOCKED);
   list_push_back (&ready_list, &t->elem);
   t->status = THREAD_READY;
-  update_ready_list();
   intr_set_level (old_level);
 }
 
@@ -338,48 +318,6 @@ thread_name (void)
 {
   return thread_current ()->name;
 }
-
-void
-update_ready_list(void) {
-  struct list_elem *e;
-  for (e = list_rbegin (&ready_list); e != list_rend (&ready_list);
-       e = list_prev (e))
-     {
-       struct list_elem *f;
-       f = list_prev(e);
-       struct thread *t = list_entry (e, struct thread, elem);
-       struct thread *tt = list_entry (f, struct thread, elem);
-       if(t->priority > tt->priority){
-         swap_new(&e, &f);
-         e = list_next(e);
-       }else{
-         break;
-       }
-     }
-}
-
-void check_priority(void) {
-  if(!list_empty(&ready_list)){
-    int now_priority = thread_current()->priority;
-    struct list_elem *e;
-    e = list_front(&ready_list);
-    struct thread *t = list_entry (e, struct thread, elem);
-    if(t->priority > now_priority){
-      thread_yield();
-    }
-  }
-}
-/*
-if(list_empty == false){
-  int now_priority = thread_get_priority ();
-  struct list_elem *e_first = list_front(&ready_list);
-  struct thread *t_first = list_entry (e_first, struct thread, elem);
-  if(now_priority < t_first->priority){
-    thread_yield();
-  }
-}
-*/
-
 
 /* Returns the running thread.
    This is running_thread() plus a couple of sanity checks.
@@ -439,11 +377,8 @@ thread_yield (void)
   ASSERT (!intr_context ());
 
   old_level = intr_disable ();
-  if (cur != idle_thread){
+  if (cur != idle_thread)
     list_push_back (&ready_list, &cur->elem);
-    update_ready_list();
-  }
-
   cur->status = THREAD_READY;
   schedule ();
   intr_set_level (old_level);
@@ -470,11 +405,7 @@ thread_foreach (thread_action_func *func, void *aux)
 void
 thread_set_priority (int new_priority)
 {
-  int priority_b = thread_current ()->priority;
   thread_current ()->priority = new_priority;
-  if (priority_b > new_priority){
-    thread_yield ();
-  }
 }
 
 /* Returns the current thread's priority. */

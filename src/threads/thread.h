@@ -122,7 +122,6 @@ void thread_go_to_sleep(int64_t ticks);
 bool check_wake_up(int64_t current_time);
 void thread_wake_up(int64_t ticks);
 void thread_unblock (struct thread *);
-void update_ready_list (void);
 
 struct thread *thread_current (void);
 tid_t thread_tid (void);
