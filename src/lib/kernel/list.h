@@ -87,14 +87,14 @@
 #include <stdint.h>
 
 /* List element. */
-struct list_elem 
+struct list_elem
   {
     struct list_elem *prev;     /* Previous list element. */
     struct list_elem *next;     /* Next list element. */
   };
 
 /* List. */
-struct list 
+struct list
   {
     struct list_elem head;      /* List head. */
     struct list_elem tail;      /* List tail. */
@@ -155,6 +155,8 @@ struct list_elem *list_back (struct list *);
 /* List properties. */
 size_t list_size (struct list *);
 bool list_empty (struct list *);
+
+void swap_new(struct list_elem **, struct list_elem **);
 
 /* Miscellaneous. */
 void list_reverse (struct list *);
