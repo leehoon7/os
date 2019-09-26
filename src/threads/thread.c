@@ -439,11 +439,12 @@ thread_yield (void)
   old_level = intr_disable ();
   if (cur != idle_thread){
     list_push_back (&ready_list, &cur->elem);
-    update_ready_list();
   }
 
   cur->status = THREAD_READY;
+  update_ready_list();
   schedule ();
+  check_priority();
   intr_set_level (old_level);
 }
 
