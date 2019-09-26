@@ -353,9 +353,10 @@ update_ready_list(void) {
           tt = temp;
        }
      }
-  struct list_elem *e = list_front(&ready_list);
-  struct thread *t = list_entry (e, struct thread, elem);
-  if(new_priority < t->priority){
+  int now_priority = thread_get_priority ();
+  struct list_elem *e_first = list_front(&ready_list);
+  struct thread *t_first = list_entry (e_first, struct thread, elem);
+  if(new_priority < t_first->priority){
     thread_yield();
   }
 }
