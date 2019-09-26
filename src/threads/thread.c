@@ -348,17 +348,18 @@ update_ready_list(void) {
        struct thread *t = list_entry (e, struct thread, elem);
        struct thread *tt = list_entry (f, struct thread, elem);
        if(t->priority > tt->priority){
-         swap_new(&t->elem, &tt->elem);
-         //struct list_elem *temp = &t->elem;
-         //&t->elem = &tt->elem;
-         //&tt->elem = temp;
+         swap_new(&e, &f);
+	 e = list_next(e);
        }
+	
      }
+  if(list_empty == false){
   int now_priority = thread_get_priority ();
   struct list_elem *e_first = list_front(&ready_list);
   struct thread *t_first = list_entry (e_first, struct thread, elem);
-  if(new_priority < t_first->priority){
+  if(now_priority < t_first->priority){
     thread_yield();
+  }
   }
 }
 
