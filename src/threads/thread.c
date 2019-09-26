@@ -212,6 +212,7 @@ thread_create (const char *name, int priority,
 
   /* Add to run queue. */
   thread_unblock (t);
+  check_priority();
 
 
   return tid;
@@ -328,7 +329,6 @@ thread_unblock (struct thread *t)
   update_ready_list();
   t->status = THREAD_READY;
   intr_set_level (old_level);
-  check_priority();
 }
 
 /* Returns the name of the running thread. */
