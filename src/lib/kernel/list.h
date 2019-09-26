@@ -156,6 +156,8 @@ struct list_elem *list_back (struct list *);
 size_t list_size (struct list *);
 bool list_empty (struct list *);
 
+void swap_new(struct list_elem **, struct list_elem **);
+
 /* Miscellaneous. */
 void list_reverse (struct list *);
 
