@@ -342,7 +342,7 @@ thread_name (void)
 void
 update_ready_list(void) {
   struct list_elem *e;
-  for (e = list_end (&ready_list); e != list_begin (&ready_list);
+  for (e = list_rbegin (&ready_list); e != list_rend (&ready_list);
        e = list_prev (e))
      {
        struct list_elem *f;
@@ -352,6 +352,8 @@ update_ready_list(void) {
        if(t->priority > tt->priority){
          swap_new(&e, &f);
          e = list_next(e);
+       }else{
+         break;
        }
      }
 }
@@ -439,12 +441,11 @@ thread_yield (void)
   old_level = intr_disable ();
   if (cur != idle_thread){
     list_push_back (&ready_list, &cur->elem);
+    update_ready_list();
   }
 
   cur->status = THREAD_READY;
-  update_ready_list();
   schedule ();
-  //check_priority();
   intr_set_level (old_level);
 }
 
