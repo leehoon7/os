@@ -350,7 +350,7 @@ update_ready_list(void) {
        if(t->priority > tt->priority){
           struct list_elem *temp = &t->elem;
           t = tt;
-          tt = temp;
+          tt = &temp;
        }
      }
   int now_priority = thread_get_priority ();
