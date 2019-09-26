@@ -444,7 +444,7 @@ thread_yield (void)
   cur->status = THREAD_READY;
   update_ready_list();
   schedule ();
-  check_priority();
+  //check_priority();
   intr_set_level (old_level);
 }
 
