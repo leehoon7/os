@@ -330,6 +330,7 @@ thread_unblock (struct thread *t)
   update_ready_list();
   t->status = THREAD_READY;
   intr_set_level (old_level);
+  check_priority();
 }
 
 /* Returns the name of the running thread. */
@@ -446,7 +447,6 @@ thread_yield (void)
 
   cur->status = THREAD_READY;
   schedule ();
-  check_priority();
   intr_set_level (old_level);
 }
 
