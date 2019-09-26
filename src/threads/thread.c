@@ -340,6 +340,8 @@ thread_name (void)
 void
 update_ready_list(void) {
   struct list_elem *e;
+  enum intr_level old_level;
+  old_level = intr_disable();
   for (e = list_end (&ready_list); e != list_begin (&ready_list);
        e = list_prev (e))
      {
@@ -349,18 +351,18 @@ update_ready_list(void) {
        struct thread *tt = list_entry (f, struct thread, elem);
        if(t->priority > tt->priority){
          swap_new(&e, &f);
-	 e = list_next(e);
+         e = list_next(e);
        }
-	
      }
   if(list_empty == false){
-  int now_priority = thread_get_priority ();
-  struct list_elem *e_first = list_front(&ready_list);
-  struct thread *t_first = list_entry (e_first, struct thread, elem);
-  if(now_priority < t_first->priority){
-    thread_yield();
+    int now_priority = thread_get_priority ();
+    struct list_elem *e_first = list_front(&ready_list);
+    struct thread *t_first = list_entry (e_first, struct thread, elem);
+    if(now_priority < t_first->priority){
+      thread_yield();
+    }
   }
-  }
+  intr_set_level(old_level);
 }
 
 /* Returns the running thread.
