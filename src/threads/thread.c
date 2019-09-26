@@ -340,9 +340,11 @@ thread_name (void)
 
 void
 update_ready_list(void) {
+  struct list_elem *e;
   for (e = list_end (&ready_list); e != list_begin (&ready_list);
        e = list_prev (e))
      {
+       struct list_elem *f;
        f = list_prev(e);
        struct thread *t = list_entry (e, struct thread, elem);
        struct thread *tt = list_entry (f, struct thread, elem);
