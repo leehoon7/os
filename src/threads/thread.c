@@ -213,8 +213,26 @@ thread_create (const char *name, int priority,
   /* Add to run queue. */
   thread_unblock (t);
 
+  sort_by_priority();
+
   return tid;
 }
+
+/*
+void sort_by_priority (void){
+  for (e = list_begin (&ready_list); e != list_end (&ready_list);
+       e = list_next (e))
+     {
+       for (f = e ; f != list_begin(&ready_list) ; f = list_prev (f)){
+         struct thread *t = list_entry (e, struct thread, elem);
+         struct thread *tt = list_entry (f, struct thread, elem);
+
+         if (tt->priority > t->priority){
+
+         }
+       }
+     }
+}*/
 
 /* Puts the current thread to sleep.  It will not be scheduled
    again until awoken by thread_unblock().
@@ -310,6 +328,7 @@ thread_unblock (struct thread *t)
   list_push_back (&ready_list, &t->elem);
   t->status = THREAD_READY;
   intr_set_level (old_level);
+  update_ready_list();
 }
 
 /* Returns the name of the running thread. */
@@ -317,6 +336,20 @@ const char *
 thread_name (void)
 {
   return thread_current ()->name;
+}
+
+void
+update_ready_list(void) {
+  for (e = list_end (&ready_list); e != list_begin (&ready_list);
+       e = list_prev (e))
+     {
+       f = list_prev(e);
+       struct thread *t = list_entry (e, struct thread, elem);
+       struct thread *tt = list_entry (f, struct thread, elem);
+       if(t->priority > tt->priority){
+         swap(&t->elem, &tt->elem);
+       }
+     }
 }
 
 /* Returns the running thread.
