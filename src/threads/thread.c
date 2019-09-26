@@ -357,12 +357,14 @@ update_ready_list(void) {
 }
 
 void check_priority(void) {
-  int now_priority = thread_current()->priority;
-  struct list_elem *e;
-  e = list_front(&ready_list);
-  struct thread *t = list_entry (e, struct thread, elem);
-  if(t->priority > now_priority){
-    thread_yield();
+  if(!list_empty(&ready_list)){
+    int now_priority = thread_current()->priority;
+    struct list_elem *e;
+    e = list_front(&ready_list);
+    struct thread *t = list_entry (e, struct thread, elem);
+    if(t->priority > now_priority){
+      thread_yield();
+    }
   }
 }
 /*
