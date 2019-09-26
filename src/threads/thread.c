@@ -348,7 +348,9 @@ update_ready_list(void) {
        struct thread *t = list_entry (e, struct thread, elem);
        struct thread *tt = list_entry (f, struct thread, elem);
        if(t->priority > tt->priority){
-          
+          struct list_elem *temp = &t->elem;
+          t = tt;
+          tt = temp;
        }
      }
 }
