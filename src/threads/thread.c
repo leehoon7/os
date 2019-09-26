@@ -213,6 +213,8 @@ thread_create (const char *name, int priority,
   /* Add to run queue. */
   thread_unblock (t);
 
+  check_priority();
+
 
   return tid;
 }
@@ -353,6 +355,16 @@ update_ready_list(void) {
        }
      }
 }
+
+void check_priority(void) {
+  int now_priority = thread_current()->priority;
+  struct list_elem *e;
+  e = list_front(&ready_list);
+  struct thread *t = list_entry (e, struct thread, elem);
+  if(t->priority > now_priority){
+    thread_yield();
+  }
+}
 /*
 if(list_empty == false){
   int now_priority = thread_get_priority ();
@@ -455,12 +467,7 @@ void
 thread_set_priority (int new_priority)
 {
   thread_current ()->priority = new_priority;
-  struct list_elem *e = list_front(&ready_list);
-  struct thread *t = list_entry (e, struct thread, elem);
-  if(new_priority < t->priority){
-    thread_yield();
-  }
-  update_ready_list();
+  check_priority();
 }
 
 /* Returns the current thread's priority. */
