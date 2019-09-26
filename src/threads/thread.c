@@ -351,7 +351,7 @@ update_ready_list(void) {
        if(t->priority > tt->priority){
          struct list_elem *temp = &t->elem;
          &t->elem = &tt->elem;
-         &tt->elem = temp;
+         &tt->elem = &temp;
        }
      }
 }
