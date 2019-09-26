@@ -353,16 +353,17 @@ update_ready_list(void) {
          e = list_next(e);
        }
      }
-  if(list_empty == false){
-    int now_priority = thread_get_priority ();
-    struct list_elem *e_first = list_front(&ready_list);
-    struct thread *t_first = list_entry (e_first, struct thread, elem);
-    if(now_priority < t_first->priority){
-      thread_yield();
-    }
-  }
-  intr_set_level(old_level);
 }
+/*
+if(list_empty == false){
+  int now_priority = thread_get_priority ();
+  struct list_elem *e_first = list_front(&ready_list);
+  struct thread *t_first = list_entry (e_first, struct thread, elem);
+  if(now_priority < t_first->priority){
+    thread_yield();
+  }
+}
+*/
 
 
 /* Returns the running thread.
@@ -423,12 +424,14 @@ thread_yield (void)
   ASSERT (!intr_context ());
 
   old_level = intr_disable ();
-  if (cur != idle_thread)
+  if (cur != idle_thread){
     list_push_back (&ready_list, &cur->elem);
+    update_ready_list();
+  }
+
   cur->status = THREAD_READY;
   schedule ();
   intr_set_level (old_level);
-  update_ready_list();
 }
 
 /* Invoke function 'func' on all threads, passing along 'aux'.
