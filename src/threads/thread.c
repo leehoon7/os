@@ -325,9 +325,9 @@ thread_unblock (struct thread *t)
   old_level = intr_disable ();
   ASSERT (t->status == THREAD_BLOCKED);
   list_push_back (&ready_list, &t->elem);
+  update_ready_list();
   t->status = THREAD_READY;
   intr_set_level (old_level);
-  update_ready_list();
 }
 
 /* Returns the name of the running thread. */
@@ -339,7 +339,6 @@ thread_name (void)
 
 void
 update_ready_list(void) {
-
   struct list_elem *e;
   for (e = list_end (&ready_list); e != list_begin (&ready_list);
        e = list_prev (e))
