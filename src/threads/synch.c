@@ -318,12 +318,30 @@ cond_signal (struct condition *cond, struct lock *lock UNUSED)
 
   if (!list_empty (&cond->waiters)) {
     struct list_elem *e;
+    int max = -99 ;
+    int iter = 0;
+    int flag = 0;
     for (e = list_begin (&cond->waiters); e != list_end (&cond->waiters);
          e = list_next(e)){
-           int a = 0;
+           struct thread *t = list_entry(e, struct thread, elem);
+           if (max < t->priority){
+             flag = iter;
+           }
+           iter++;
          }
-    sema_up (&list_entry (list_pop_front (&cond->waiters),
-                          struct semaphore_elem, elem)->semaphore); 
+    iter = 0;
+    for (e = list_begin (&cond->waiters); e != list_end (&cond->waiters);
+         e = list_next(e)){
+           if (iter == flag){
+             list_remove(e);
+             sema_up (&list_entry (list_pop_front (e),
+                                   struct semaphore_elem, elem)->semaphore);
+             break;
+           }
+           iter++;
+          }
+    //sema_up (&list_entry (list_pop_front (&cond->waiters),
+    //                      struct semaphore_elem, elem)->semaphore);
   }
 
 }
