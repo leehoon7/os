@@ -420,14 +420,11 @@ void
 thread_set_priority (int new_priority)
 {
   thread_current ()->priority = new_priority;
-
   struct list_elem *e = list_begin(&ready_list);
-  struct thread *t = list_entry (e, struct thread, allelem);
-  
+  struct thread *t = list_entry (e, struct thread, elem);
   if(new_priority < t->priority){
     thread_yield();
   }
-
 }
 
 /* Returns the current thread's priority. */
