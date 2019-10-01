@@ -423,7 +423,7 @@ thread_set_priority (int new_priority)
 
   struct list_elem *e = list_begin(&ready_list);
   struct thread *t = list_entry (e, struct thread, allelem);
-
+  
   if(new_priority < t->priority){
     thread_yield();
   }
