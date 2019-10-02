@@ -214,7 +214,7 @@ void lock_donate(struct lock *lock) {
 }
 
 void lock_collect(struct lock *lock){
-  thread_current()->priority = thread_current()->priority_before;
+  lock->holder->priority = lock->holder->priority_before;
 }
 
 
@@ -249,7 +249,7 @@ lock_release (struct lock *lock)
   ASSERT (lock != NULL);
   ASSERT (lock_held_by_current_thread (lock));
 
-  //lock_collect(lock);
+  lock_collect(lock);
 
   lock->holder = NULL;
   sema_up (&lock->semaphore);
