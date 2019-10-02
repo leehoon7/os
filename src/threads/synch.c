@@ -265,7 +265,7 @@ lock_release (struct lock *lock)
   //if(lock->holder == thread_current()){
   //  thread_current()->priority = thread_current()->priority_before;
   //}
-  thread_current()->priority = thread_current()->priority_before;
+  //thread_current()->priority = thread_current()->priority_before;
 
   lock->holder = NULL;
   sema_up (&lock->semaphore);
