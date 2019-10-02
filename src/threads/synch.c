@@ -261,7 +261,7 @@ lock_release (struct lock *lock)
   ASSERT (lock_held_by_current_thread (lock));
 
   //lock_collect(lock);
-  thread_current()->priority = thread_current()->priority_before;
+  //thread_current()->priority = thread_current()->priority_before;
 
   lock->holder = NULL;
   sema_up (&lock->semaphore);
