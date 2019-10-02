@@ -224,10 +224,6 @@ void lock_donate(struct lock *lock) {
   }
 }
 
-void lock_collect(struct lock *lock){
-  lock->holder->priority = lock->holder->priority_before;
-}
-
 
 /* Tries to acquires LOCK and returns true if successful or false
    on failure.  The lock must not already be held by the current
@@ -265,10 +261,19 @@ lock_release (struct lock *lock)
   //if(lock->holder == thread_current()){
   //  thread_current()->priority = thread_current()->priority_before;
   //}
-  //thread_current()->priority = thread_current()->priority_before;
+  thread_current()->priority = lock_collect(lock);
 
   lock->holder = NULL;
   sema_up (&lock->semaphore);
+}
+
+int lock_collect(struct lock *lock){
+  maxi = -1;
+  if(!list_empty(lock->semaphore->waiters)){
+    if(list_entry(list_begin(lock->semaphore->waiters), struct thread, elem)->priority > maxi){
+      return list_entry(list_begin(lock->semaphore->waiters), struct thread, elem)->priority;
+    }
+  }
 }
 
 /* Returns true if the current thread holds LOCK, false
