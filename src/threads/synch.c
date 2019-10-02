@@ -57,6 +57,17 @@ sema_init (struct semaphore *sema, unsigned value)
    interrupt handler.  This function may be called with
    interrupts disabled, but if it sleeps then the next scheduled
    thread will probably turn interrupts back on. */
+bool
+priority_compare(const struct list_elem *e, const struct list_elem *f,
+ void *aux UNUSED){
+ struct thread *t1 = list_entry (e, struct thread, elem);
+ struct thread *t2 = list_entry (f, struct thread, elem);
+ if(t1->priority > t2->priority){
+   return true;
+ }
+ return false;
+}
+
 void
 sema_down (struct semaphore *sema)
 {
