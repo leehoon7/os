@@ -268,7 +268,7 @@ lock_release (struct lock *lock)
 }
 
 int lock_collect(struct lock *lock){
-  maxi = -1;
+  int maxi = -1;
   if(!list_empty(lock->semaphore->waiters)){
     if(list_entry(list_begin(lock->semaphore->waiters), struct thread, elem)->priority > maxi){
       return list_entry(list_begin(lock->semaphore->waiters), struct thread, elem)->priority;
