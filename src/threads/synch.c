@@ -58,7 +58,7 @@ sema_init (struct semaphore *sema, unsigned value)
    interrupts disabled, but if it sleeps then the next scheduled
    thread will probably turn interrupts back on. */
 bool
-priority_compare(const struct list_elem *e, const struct list_elem *f,
+priority_compare_s(const struct list_elem *e, const struct list_elem *f,
  void *aux UNUSED){
  struct thread *t1 = list_entry (e, struct thread, elem);
  struct thread *t2 = list_entry (f, struct thread, elem);
@@ -79,7 +79,7 @@ sema_down (struct semaphore *sema)
   old_level = intr_disable ();
   while (sema->value == 0)
     {
-      list_insert_ordered (&sema->waiters, &thread_current ()->elem, priority_compare, NULL);
+      list_insert_ordered (&sema->waiters, &thread_current ()->elem, priority_compare_s, NULL);
       thread_block ();
     }
   sema->value--;
