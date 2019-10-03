@@ -37,7 +37,7 @@ test_priority_donate_sema (void)
   /* Make sure our priority is the default. */
   ASSERT (thread_get_priority () == PRI_DEFAULT);
 
-  lock_init (&ls.lock);
+  lock_init (&(ls->lock));
   sema_init (&ls.sema, 0);
   thread_create ("low", PRI_DEFAULT + 1, l_thread_func, &ls);
   thread_create ("med", PRI_DEFAULT + 3, m_thread_func, &ls);
