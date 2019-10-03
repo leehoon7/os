@@ -61,7 +61,7 @@ bool
 priority_compare_s(const struct list_elem *e, const struct list_elem *f, void *aux UNUSED){
  struct thread *t1 = list_entry (e, struct thread, elem);
  struct thread *t2 = list_entry (f, struct thread, elem);
- if(t1->priority > t2->priority){
+ if(t1->priority >= t2->priority){
    return true;
  }
  return false;
