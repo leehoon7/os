@@ -215,11 +215,12 @@ lock_acquire (struct lock *lock)
   ASSERT (lock != NULL);
   ASSERT (!intr_context ());
   ASSERT (!lock_held_by_current_thread (lock));
-
+  thread_current()->waiting_lock = lock;
   lock_donate(lock);
 
   sema_down (&lock->semaphore);
   lock->holder = thread_current ();
+  thread_current()->waiting_lock = NULL;
   list_push_back (& thread_current()->holding_lock, &lock->elem);
 }
 
@@ -227,6 +228,10 @@ void lock_donate(struct lock *lock) {
   if (lock-> holder != NULL){
     if(lock->holder->priority < thread_current()->priority){
       lock->holder->priority = thread_current()->priority; // priority donation.
+
+      if(lock->holder->waiting_lock != NULL){
+        lock_donate(lock->holder->waiting_lock);
+      }
     }
   }
 }
