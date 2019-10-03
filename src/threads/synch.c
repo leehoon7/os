@@ -123,8 +123,8 @@ sema_up (struct semaphore *sema)
   ASSERT (sema != NULL);
 
   old_level = intr_disable ();
-  struct thread *t
-  
+  struct thread *t;
+
   if (!list_empty (&sema->waiters)){
     t = list_entry (list_pop_front (&sema->waiters),
                                 struct thread, elem);
