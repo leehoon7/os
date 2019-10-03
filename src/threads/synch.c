@@ -132,7 +132,8 @@ sema_up (struct semaphore *sema)
 
   sema->value++;
 
-  if (t->priority > thread_get_priority ()){
+  struct thread *tt = list_entry(list_begin(&ready_list), struct thread, elem);
+  if (tt->priority > thread_get_priority ()){
     thread_yield ();
   }
 
