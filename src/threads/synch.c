@@ -364,8 +364,8 @@ priority_compare_sema(const struct list_elem *e, const struct list_elem *f, void
   struct semaphore_elem *s1 = list_entry (e, struct semaphore_elem, elem);
   struct semaphore_elem *s2 = list_entry (f, struct semaphore_elem, elem);
 
-  struct thread *t1 = list_entry(list_begin(&s1->semaphore.waiters), struct thread, elem);
-  struct thread *t2 = list_entry(list_begin(&s2->semaphore.waiters), struct thread, elem);
+  struct thread *t1 = list_entry(list_front(&s1->semaphore.waiters), struct thread, elem);
+  struct thread *t2 = list_entry(list_front(&s2->semaphore.waiters), struct thread, elem);
 
   if(t1->priority > t2->priority){
     return true;
