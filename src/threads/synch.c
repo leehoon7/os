@@ -410,6 +410,13 @@ cond_signal (struct condition *cond, struct lock *lock UNUSED)
   sema_up (&list_entry (list_pop_front (&cond->waiters),
                         struct semaphore_elem, elem)->semaphore);
 
+  if (!list_empty (&cond->waiters))
+  {
+    list_sort (&cond->waiters, priority_compare_sema, NULL);
+    sema_up (&list_entry (list_pop_front (&cond->waiters),
+                          struct semaphore_elem, elem)->semaphore);
+  }
+
 /*
   if (!list_empty (&cond->waiters)) {
     struct list_elem *e;
