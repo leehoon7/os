@@ -30,23 +30,14 @@ test_priority_donate_one (void)
   ASSERT (thread_get_priority () == PRI_DEFAULT);
 
   lock_init (&lock);
-  msg ("priority & ~ original : %d, %d", thread_get_priority(), thread_current()->priority_before);
   lock_acquire (&lock);
-  msg ("priority & ~ original : %d, %d", thread_get_priority(), thread_current()->priority_before);
   thread_create ("acquire1", PRI_DEFAULT + 1, acquire1_thread_func, &lock);
-  msg ("priority & ~ original : %d, %d", thread_get_priority(), thread_current()->priority_before);
-  msg ("priority & ~ original : %d, %d", thread_get_priority(), thread_current()->priority_before);
-  msg ("priority & ~ original : %d, %d", thread_get_priority(), thread_current()->priority_before);
-  msg ("priority & ~ original : %d, %d", thread_get_priority(), thread_current()->priority_before);
   msg ("This thread should have priority %d.  Actual priority: %d.",
        PRI_DEFAULT + 1, thread_get_priority ());
-  msg ("priority & ~ original : %d, %d", thread_get_priority(), thread_current()->priority_before);
   thread_create ("acquire2", PRI_DEFAULT + 2, acquire2_thread_func, &lock);
   msg ("This thread should have priority %d.  Actual priority: %d.",
        PRI_DEFAULT + 2, thread_get_priority ());
-  msg ("priority & ~ original : %d, %d", thread_get_priority(), thread_current()->priority_before);
   lock_release (&lock);
-  msg ("priority & ~ original : %d, %d", thread_get_priority(), thread_current()->priority_before);
   msg ("acquire2, acquire1 must already have finished, in that order.");
   msg ("This should be the last line before finishing this test.");
 }
