@@ -129,7 +129,7 @@ sema_up (struct semaphore *sema)
     t = list_entry (list_pop_front (&sema->waiters),
                                 struct thread, elem);
     thread_unblock (t);
-  } 
+  }
 
   sema->value++;
 
