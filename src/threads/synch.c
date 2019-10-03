@@ -419,7 +419,7 @@ cond_signal (struct condition *cond, struct lock *lock UNUSED)
   }
   */
 
-
+/*
   if (!list_empty (&cond->waiters)) {
     struct list_elem *e;
     int max = -99 ;
@@ -447,7 +447,7 @@ cond_signal (struct condition *cond, struct lock *lock UNUSED)
     //sema_up (&list_entry (list_pop_front (&cond->waiters),
     //                      struct semaphore_elem, elem)->semaphore);
   }
-
+*/
 }
 
 /* Wakes up all threads, if any, waiting on COND (protected by
