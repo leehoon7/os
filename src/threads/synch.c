@@ -268,12 +268,13 @@ lock_release (struct lock *lock)
 
 int lock_collect(struct lock *lock){
   int maxi = thread_current()->priority_before;
+  /*
   struct list *waiters_ = &(&lock->semaphore)->waiters;
   if(!list_empty(waiters_)){
     if(list_entry(list_begin(waiters_), struct thread, elem)->priority > maxi){
       maxi = list_entry(list_begin(waiters_), struct thread, elem)->priority;
     }
-  }
+  }*/
   return maxi;
 }
 
