@@ -276,8 +276,8 @@ lock_release (struct lock *lock)
 
 int lock_collect(struct lock *lock){
   int maxi = thread_current()->priority_before;
-  struct list *holding_lock = thread_current()->holding_lock;
-  
+  struct list *holding_lock = &thread_current()->holding_lock;
+
   struct list_elem *e;
   for (e = list_begin (&holding_lock); e != list_end (&holding_lock); e = list_next(e)){
          struct lock *lock_now = list_entry(e, struct lock, elem);
