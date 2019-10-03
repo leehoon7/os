@@ -407,8 +407,8 @@ cond_signal (struct condition *cond, struct lock *lock UNUSED)
   ASSERT (!intr_context ());
   ASSERT (lock_held_by_current_thread (lock));
 
-  //sema_up (&list_entry (list_pop_front (&cond->waiters),
-  //                      struct semaphore_elem, elem)->semaphore);
+  sema_up (&list_entry (list_pop_back (&cond->waiters),
+                        struct semaphore_elem, elem)->semaphore);
 
 /*
   if (!list_empty (&cond->waiters))
@@ -419,7 +419,7 @@ cond_signal (struct condition *cond, struct lock *lock UNUSED)
   }
   */
 
-
+/*
   if (!list_empty (&cond->waiters)) {
     struct list_elem *e;
     int max = -99 ;
@@ -446,7 +446,7 @@ cond_signal (struct condition *cond, struct lock *lock UNUSED)
           }
     //sema_up (&list_entry (list_pop_front (&cond->waiters),
     //                      struct semaphore_elem, elem)->semaphore);
-  }
+  }*/
 
 }
 
