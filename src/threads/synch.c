@@ -111,7 +111,7 @@ sema_try_down (struct semaphore *sema)
 
   return success;
 }
-
+ 
 /* Up or "V" operation on a semaphore.  Increments SEMA's value
    and wakes up one thread of those waiting for SEMA, if any.
 
