@@ -30,7 +30,9 @@ test_priority_donate_one (void)
   ASSERT (thread_get_priority () == PRI_DEFAULT);
 
   lock_init (&lock);
+  msg ("priority & ~ original : %d, %d", thread_get_priority(), thread_current()->priority_before);
   lock_acquire (&lock);
+  msg ("priority & ~ original : %d, %d", thread_get_priority(), thread_current()->priority_before);
   thread_create ("acquire1", PRI_DEFAULT + 1, acquire1_thread_func, &lock);
   msg ("priority & ~ original : %d, %d", thread_get_priority(), thread_current()->priority_before);
   msg ("priority & ~ original : %d, %d", thread_get_priority(), thread_current()->priority_before);
