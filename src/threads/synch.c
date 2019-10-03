@@ -226,7 +226,6 @@ lock_acquire (struct lock *lock)
 void lock_donate(struct lock *lock) {
   if (lock-> holder != NULL){
     if(lock->holder->priority < thread_current()->priority){
-      //lock->holder->priority_before = lock->holder->priority;
       lock->holder->priority = thread_current()->priority; // priority donation.
     }
   }
@@ -277,6 +276,17 @@ lock_release (struct lock *lock)
 
 int lock_collect(struct lock *lock){
   int maxi = thread_current()->priority_before;
+  struct list *holding_lock = thread_current()->holding_lock;
+  for (e = list_begin (&holding_lock); e != list_end (&holding_lock); e = list_next(e)){
+         struct lock *lock_now = list_entry(e, struct lock, elem);
+         struct list *waiters_now = &(&lock_now->semaphore)->waiters;
+         if(!list_empty(&waiters_now)){
+           int priority_now = list_entry(list_begin(&waiters_now), struct thread, elem)->priority;
+           if (priority_now > maxi){
+             maxi = priority_now;
+           }
+         }
+       }
   /*
   struct list *waiters_ = &(&lock->semaphore)->waiters;
   if(!list_empty(waiters_)){
