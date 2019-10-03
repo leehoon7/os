@@ -386,7 +386,7 @@ cond_wait (struct condition *cond, struct lock *lock)
   sema_init (&waiter.semaphore, 0);
   //list_insert_ordered (&cond->waiters, &waiter.elem, priority_compare_sema, NULL);
   list_push_back (&cond->waiters, &waiter.elem);
-  list_sort (&cond->waiters, cmp_cond_priority, NULL);
+  list_sort (&cond->waiters, priority_compare_sema, NULL);
   //list_insert_ordered (&sema->waiters, &thread_current ()->elem, priority_compare_s, NULL);
   lock_release (lock);
   sema_down (&waiter.semaphore);
