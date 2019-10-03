@@ -279,9 +279,9 @@ int lock_collect(struct lock *lock){
   int maxi = thread_current()->priority_before;
   struct list *holding_lock = &thread_current()->holding_lock;
   struct list_elem *e;
-  if(!list_empty(&holding_lock)){
+  if(!list_empty(holding_lock)){
 
-    for (e = list_begin (&holding_lock); e != list_end (&holding_lock); e = list_next(e)){
+    for (e = list_begin (holding_lock); e != list_end (holding_lock); e = list_next(e)){
        struct lock *lock_now = list_entry(e, struct lock, elem);
        struct list *waiters_now = &(&lock_now->semaphore)->waiters;
        if(!list_empty(&waiters_now)){
@@ -290,6 +290,7 @@ int lock_collect(struct lock *lock){
            maxi = priority_now;
          }
        }
+
     }
   }
 
