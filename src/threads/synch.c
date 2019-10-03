@@ -367,7 +367,10 @@ priority_compare_sema(const struct list_elem *e, const struct list_elem *f, void
   struct thread *t1 = list_entry(list_begin(&s1->semaphore.waiters), struct thread, elem);
   struct thread *t2 = list_entry(list_begin(&s2->semaphore.waiters), struct thread, elem);
 
-  return t1->priority > t2->priority;
+  if(t1->priority > t2->priority){
+    return true;
+  }
+  return false;
 }
 
 void
