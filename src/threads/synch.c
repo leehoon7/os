@@ -261,7 +261,7 @@ lock_release (struct lock *lock)
   //if(lock->holder == thread_current()){
   //  thread_current()->priority = thread_current()->priority_before;
   //}
-  //thread_current()->priority = lock_collect(lock);
+  thread_current()->priority = lock_collect(lock);
 
   lock->holder = NULL;
   sema_up (&lock->semaphore);
@@ -269,9 +269,10 @@ lock_release (struct lock *lock)
 
 int lock_collect(struct lock *lock){
   int maxi = thread_current()->priority_before;
-  if(!list_empty(&(&lock->semaphore)->waiters)){
-    if(list_entry(list_begin(&(&lock->semaphore)->waiters), struct thread, elem)->priority > maxi){
-      return list_entry(list_begin(&(&lock->semaphore)->waiters), struct thread, elem)->priority;
+  struct list *waiters_ = &(&lock->semaphore)->waiters;
+  if(!list_empty(&waiters_)){
+    if(list_entry(list_begin(&waiters_), struct thread, elem)->priority > maxi){
+      maxi = list_entry(list_begin(&waiters), struct thread, elem)->priority;
     }
   }
   return maxi;
