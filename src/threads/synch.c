@@ -430,6 +430,7 @@ cond_signal (struct condition *cond, struct lock *lock UNUSED)
            struct thread *t = list_entry(e, struct thread, elem);
            if (max < t->priority){
              flag = iter;
+             max = t->priority;
            }
            iter++;
          }
