@@ -439,8 +439,7 @@ cond_signal (struct condition *cond, struct lock *lock UNUSED)
          e = list_next(e)){
            if (iter == flag){
              list_remove(e);
-             sema_up (&list_entry (list_pop_front (e),
-                                   struct semaphore_elem, elem)->semaphore);
+             sema_up (&list_entry (e, struct semaphore_elem, elem)->semaphore);
              break;
            }
            iter++;
