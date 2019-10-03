@@ -384,8 +384,8 @@ cond_wait (struct condition *cond, struct lock *lock)
   ASSERT (lock_held_by_current_thread (lock));
 
   sema_init (&waiter.semaphore, 0);
-  //list_insert_ordered (&cond->waiters, &waiter.elem, priority_compare_sema, NULL);
-  list_push_back (&cond->waiters, &waiter.elem);
+  list_insert_ordered (&cond->waiters, &waiter.elem, priority_compare_sema, NULL);
+  //list_push_back (&cond->waiters, &waiter.elem);
   //list_insert_ordered (&sema->waiters, &thread_current ()->elem, priority_compare_s, NULL);
   lock_release (lock);
   sema_down (&waiter.semaphore);
@@ -419,7 +419,7 @@ cond_signal (struct condition *cond, struct lock *lock UNUSED)
   }
   */
 
-/*
+
   if (!list_empty (&cond->waiters)) {
     struct list_elem *e;
     int max = -99 ;
@@ -446,7 +446,7 @@ cond_signal (struct condition *cond, struct lock *lock UNUSED)
           }
     //sema_up (&list_entry (list_pop_front (&cond->waiters),
     //                      struct semaphore_elem, elem)->semaphore);
-  }*/
+  }
 
 }
 
