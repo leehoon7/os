@@ -268,6 +268,7 @@ lock_release (struct lock *lock)
   //if(lock->holder == thread_current()){
   //  thread_current()->priority = thread_current()->priority_before;
   //}
+  list_remove(&lock->elem);
   thread_current()->priority = lock_collect(lock);
 
   lock->holder = NULL;
