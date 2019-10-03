@@ -58,8 +58,7 @@ sema_init (struct semaphore *sema, unsigned value)
    interrupts disabled, but if it sleeps then the next scheduled
    thread will probably turn interrupts back on. */
 bool
-priority_compare_s(const struct list_elem *e, const struct list_elem *f,
- void *aux UNUSED){
+priority_compare_s(const struct list_elem *e, const struct list_elem *f, void *aux UNUSED){
  struct thread *t1 = list_entry (e, struct thread, elem);
  struct thread *t2 = list_entry (f, struct thread, elem);
  if(t1->priority > t2->priority){
@@ -270,9 +269,9 @@ lock_release (struct lock *lock)
 int lock_collect(struct lock *lock){
   int maxi = thread_current()->priority_before;
   struct list *waiters_ = &(&lock->semaphore)->waiters;
-  if(!list_empty(&waiters_)){
-    if(list_entry(list_begin(&waiters_), struct thread, elem)->priority > maxi){
-      maxi = list_entry(list_begin(&waiters), struct thread, elem)->priority;
+  if(!list_empty(waiters_)){
+    if(list_entry(list_begin(waiters_), struct thread, elem)->priority > maxi){
+      maxi = list_entry(list_begin(waiters_), struct thread, elem)->priority;
     }
   }
   return maxi;
