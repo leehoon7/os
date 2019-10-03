@@ -288,6 +288,7 @@ int lock_collect(struct lock *lock){
          int priority_now = list_entry(list_begin(&waiters_now), struct thread, elem)->priority;
          if (priority_now > maxi){
            maxi = priority_now;
+           msg("maximum priority changed to : %d", maxi);
          }
        }
 
