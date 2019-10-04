@@ -230,19 +230,15 @@ void lock_donate(struct lock *lock) {
     if(lock->holder->priority < thread_current()->priority){
       lock->holder->priority = thread_current()->priority; // priority donation.
 
-      struct lock *temp_lock = lock
+      struct lock *temp_lock = lock;
       while(temp_lock->holder->waiting_lock != NULL){
         temp_lock = temp_lock->holder->waiting_lock;
         if (temp_lock->holder != NULL){
-          if (temp_lock->holder->priority < thread_current()->prioirity){
-            temp_lock->holder->priority = thread_current()->prioirity;
+          if (temp_lock->holder->priority < thread_current()->priority){
+            temp_lock->holder->priority = thread_current()->priority;
           }
         }
       }
-
-      //if(lock->holder->waiting_lock != NULL){
-      //  lock_donate(lock->holder->waiting_lock);
-      //}
     }
   }
 }
