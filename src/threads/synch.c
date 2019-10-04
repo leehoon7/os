@@ -274,31 +274,38 @@ lock_release (struct lock *lock)
   //  thread_current()->priority = thread_current()->priority_before;
   //}
   list_remove(&lock->elem);
-  thread_current()->priority = lock_collect(lock);
+  lock_collect(lock);
 
   lock->holder = NULL;
   sema_up (&lock->semaphore);
 }
 
-int lock_collect(struct lock *lock){
-  int maxi = thread_current()->priority_before;
+void lock_collect(struct lock *lock){
+  int max_pri = thread_current()->priority_before;
   struct list *holding_lock = &thread_current()->holding_lock;
   struct list_elem *e;
-  if(!list_empty(holding_lock)){
-    for (e = list_begin (holding_lock); e != list_end (holding_lock); e = list_next(e)){
-       struct lock *lock_now = list_entry(e, struct lock, elem);
-       struct list *waiters_now = &(&lock_now->semaphore)->waiters;
-       if(!list_empty(waiters_now)){
-         int priority_now = list_entry(list_begin(waiters_now), struct thread, elem)->priority;
-         if (priority_now > maxi){
-           maxi = priority_now;
-           //msg("maximum priority changed to : %d", maxi);
-         }
-       }
 
-    }
+  if(list_empty(holding_lock)){
+    //thread_set_priority(max_pri);
+    thread_current()->priority = max_pri;
+    return;
   }
-  return maxi;
+  
+  for (e = list_begin (holding_lock); e != list_end (holding_lock); e = list_next(e)){
+     struct lock *lock_now = list_entry(e, struct lock, elem);
+     struct list *waiters_now = &(&lock_now->semaphore)->waiters;
+     
+     if(!list_empty(waiters_now)){
+       int priority_now = list_entry(list_begin(waiters_now), struct thread, elem)->priority;
+       
+       if (priority_now > max_pri){
+         max_pri = priority_now;
+         //msg("maximum priority changed to : %d", max_pri);
+       }
+     }
+  }
+  thread_current()->priority = max_pri;
+  //thread_set_priority(max_pri);
   /*
   struct list *waiters_ = &(&lock->semaphore)->waiters;
   if(!list_empty(waiters_)){
