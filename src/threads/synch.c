@@ -127,7 +127,6 @@ sema_up (struct semaphore *sema)
 
   if (!list_empty (&sema->waiters)){
     list_sort (&sema->waiters, priority_compare_s, NULL); // for priority-donate -sema
-     //*t;
     struct thread *t = list_entry (list_pop_front (&sema->waiters),
                                 struct thread, elem);
     thread_unblock (t);
@@ -227,10 +226,9 @@ lock_acquire (struct lock *lock)
 }
 
 void lock_donate(struct lock *lock) {
-  if (lock-> holder != NULL){
+  if (lock->holder != NULL){
     if(lock->holder->priority < thread_current()->priority){
       lock->holder->priority = thread_current()->priority; // priority donation.
-
       if(lock->holder->waiting_lock != NULL){
         lock_donate(lock->holder->waiting_lock);
       }
@@ -287,7 +285,6 @@ int lock_collect(struct lock *lock){
   struct list *holding_lock = &thread_current()->holding_lock;
   struct list_elem *e;
   if(!list_empty(holding_lock)){
-
     for (e = list_begin (holding_lock); e != list_end (holding_lock); e = list_next(e)){
        struct lock *lock_now = list_entry(e, struct lock, elem);
        struct list *waiters_now = &(&lock_now->semaphore)->waiters;
@@ -301,7 +298,7 @@ int lock_collect(struct lock *lock){
 
     }
   }
-
+  return maxi;
   /*
   struct list *waiters_ = &(&lock->semaphore)->waiters;
   if(!list_empty(waiters_)){
@@ -309,7 +306,6 @@ int lock_collect(struct lock *lock){
       maxi = list_entry(list_begin(waiters_), struct thread, elem)->priority;
     }
   }*/
-  return maxi;
 }
 
 /* Returns true if the current thread holds LOCK, false
