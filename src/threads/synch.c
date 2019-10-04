@@ -231,12 +231,17 @@ void donate_priority(struct lock *lock) {
       lock->holder->priority = thread_current()->priority; // priority donation.
 
       struct lock *temp_lock = lock;
+      int flag = 0;
       while(temp_lock->holder->waiting_lock != NULL){
         temp_lock = temp_lock->holder->waiting_lock;
         if (temp_lock->holder != NULL){
           if (temp_lock->holder->priority < thread_current()->priority){
             temp_lock->holder->priority = thread_current()->priority;
           }
+        }
+        flag++;
+        if(flag==8){
+          break;
         }
       }
     }
