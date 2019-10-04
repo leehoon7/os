@@ -229,9 +229,20 @@ void lock_donate(struct lock *lock) {
   if (lock->holder != NULL){
     if(lock->holder->priority < thread_current()->priority){
       lock->holder->priority = thread_current()->priority; // priority donation.
-      if(lock->holder->waiting_lock != NULL){
-        lock_donate(lock->holder->waiting_lock);
+
+      struct lock *temp_lock = lock
+      while(temp_lock->holder->waiting_lock != NULL){
+        temp_lock = temp_lock->holder->waiting_lock;
+        if (temp_lock->holder != NULL){
+          if (temp_lock->holder->priority < thread_current()->prioirity){
+            temp_lock->holder->priority = thread_current()->prioirity;
+          }
+        }
       }
+
+      //if(lock->holder->waiting_lock != NULL){
+      //  lock_donate(lock->holder->waiting_lock);
+      //}
     }
   }
 }
@@ -290,14 +301,14 @@ void lock_collect(struct lock *lock){
     thread_current()->priority = max_pri;
     return;
   }
-  
+
   for (e = list_begin (holding_lock); e != list_end (holding_lock); e = list_next(e)){
      struct lock *lock_now = list_entry(e, struct lock, elem);
      struct list *waiters_now = &(&lock_now->semaphore)->waiters;
-     
+
      if(!list_empty(waiters_now)){
        int priority_now = list_entry(list_begin(waiters_now), struct thread, elem)->priority;
-       
+
        if (priority_now > max_pri){
          max_pri = priority_now;
          //msg("maximum priority changed to : %d", max_pri);
